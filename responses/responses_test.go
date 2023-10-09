@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"log"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -17,12 +17,8 @@ func TestResponseOk(t *testing.T) {
 		testStruct,
 		"message",
 	)
-	if responseOk.Data != testStruct {
-		log.Fatal("Response data is wrong")
-	}
-	if responseOk.Message != "message" {
-		log.Fatal("Response message is wrong")
-	}
+	assert.Equal(t, responseOk.Data, testStruct)
+	assert.Equal(t, responseOk.Message, "message")
 }
 
 func TestResponseStruct(t *testing.T) {
@@ -31,15 +27,6 @@ func TestResponseStruct(t *testing.T) {
 		Message: "Message test",
 	}
 
-	if response.Data != "Data test" {
-		log.Fatal("Response data is wrong")
-	}
-	if response.Message != "Message test" {
-		log.Fatal("Response message is wrong")
-	}
-	/*
-		fmt.Println(response)
-		// Output:
-		// [Data: "Data test 2" Message: "Message test"]
-	*/
+	assert.Equal(t, response.Data, "Data test")
+	assert.Equal(t, response.Message, "Message test")
 }

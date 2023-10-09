@@ -1,14 +1,25 @@
-package main
+package cmd
 
 import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
 	"os"
 )
 
-func main() {
+var Migrate = &cobra.Command{
+	Use:   "migrate",
+	Short: "Run the application migrations",
+	Run: func(cmd *cobra.Command, args []string) {
+		// Lógica para ejecutar la aplicación aquí
+		fmt.Println("Running migrations...")
+		migrate()
+	},
+}
+
+func migrate() {
 	// DB credentials
 	godotenv.Load(".env")
 	user := os.Getenv("DB_USER")
@@ -37,7 +48,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Base de datos creada con éxito.")
+	fmt.Println("Database created successfully")
 
 	// Ejecuta las sentencias SQL desde schema.sql
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), password VARCHAR(255), email VARCHAR(255));")
@@ -45,5 +56,5 @@ func main() {
 		fmt.Println("Error al ejecutar las sentencias SQL:", err)
 		return
 	}
-	fmt.Println("Tablas creadas con éxito.")
+	fmt.Println("Tables created successfully.")
 }

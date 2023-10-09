@@ -1,10 +1,10 @@
 package users
 
 import (
-	"GoRepositoryPattern/users/domain"
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/lfcifuentes/go-repository-pattern/users/domain"
 )
 
 type UserRepository interface {

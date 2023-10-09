@@ -1,10 +1,10 @@
 package users
 
 import (
-	"GoRepositoryPattern/responses"
-	"GoRepositoryPattern/users/domain"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
+	"github.com/lfcifuentes/go-repository-pattern/responses"
+	"github.com/lfcifuentes/go-repository-pattern/users/domain"
 	"net/http"
 	"strconv"
 )
