@@ -13,6 +13,7 @@ func main() {
 	rootCmd.AddCommand(
 		cmd2.Run,
 		cmd2.Migrate,
+		cmd2.AppSecret,
 	)
 
 	if err := rootCmd.Execute(); err != nil {

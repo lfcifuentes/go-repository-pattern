@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/lfcifuentes/go-repository-pattern/app/security"
 )
@@ -11,9 +12,15 @@ type Users struct {
 
 type User struct {
 	ID       int64  `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password,omitempty"`
+	Name     string `json:"name" validate:"required"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password,omitempty" validate:"required"`
+}
+
+func UnmarshalUser(data []byte) (User, error) {
+	var u User
+	err := json.Unmarshal(data, &u)
+	return u, err
 }
 
 func (u *User) CreatePasswordHash() string {

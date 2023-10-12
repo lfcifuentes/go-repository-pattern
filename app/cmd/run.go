@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
 	"github.com/lfcifuentes/go-repository-pattern/app/http/router"
 	"github.com/lfcifuentes/go-repository-pattern/database"
@@ -34,12 +32,8 @@ func runServer() {
 	}
 	defer db.Close()
 
-	r := chi.NewRouter()
-
-	r.Use(middleware.Logger)
-
 	// Configura el enrutador
-	router := router.NewRouter(r, db)
+	router := router.NewRouter(db)
 
 	fmt.Println(fmt.Sprintf("Server is running in port %v", "8080"))
 	// Inicia el servidor web

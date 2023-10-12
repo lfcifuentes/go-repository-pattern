@@ -76,10 +76,10 @@ func (r *SQLUserRepository) Create(user *model.User) error {
 	_, err := r.db.Exec(query, user.Name, user.CreatePasswordHash(), user.Email)
 
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
-	return errors.New("ERROR")
+	return nil
 }
 
 func (r *SQLUserRepository) ChangePassword(user *model.User) error {
