@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joho/godotenv"
 	"github.com/lfcifuentes/go-repository-pattern/database"
 	"github.com/lfcifuentes/go-repository-pattern/users"
 	"github.com/spf13/cobra"
@@ -22,6 +23,10 @@ var Run = &cobra.Command{
 }
 
 func runServer() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Configura la base de datos
 	db, err := database.CreateConnection()
 	if err != nil {
@@ -35,7 +40,6 @@ func runServer() {
 
 	// Configura el enrutador
 	router := users.NewRouter(r, db)
-	router = users.NewRouter(router, db)
 
 	// Inicia el servidor web
 	http.ListenAndServe(":8080", router)

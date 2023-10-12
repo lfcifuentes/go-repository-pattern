@@ -10,10 +10,20 @@ go run main.go run
 go run main.go migrate
 ```
 
-### Testing
-````shell
+#### Testing
+
+```bash
 go test -cover ./...
-````
+```
+```bash
+go clean -testcache 
+```
+```bash
+go test  ./... -coverprofile=coverage.out
+``` 
+```bash
+go tool cover -html=coverage.out
+```
 
 ### Start Mysql Services
 ```shell

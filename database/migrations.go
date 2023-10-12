@@ -4,35 +4,40 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"os"
 )
 
+// CreateConnectionString create database connection string
 func CreateConnectionString() string {
+	dbName := os.Getenv("DB_NAME")
 	// DB credentials
-	godotenv.Load(".env")
+	dns := CreateConnectionWithoutDbString()
+
+	// Crear la cadena de conexión para PostgreSQL sin especificar la base de datos
+	return fmt.Sprintf("%s dbname=%s", dns, dbName)
+}
+
+// CreateConnectionWithoutDbString
+func CreateConnectionWithoutDbString() string {
+	// DB credentials
 	user := os.Getenv("DB_USER")
 	pass := os.Getenv("DB_PASSWORD")
-	database := os.Getenv("DB_NAME")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
 
-	return fmt.Sprintf(
-		"%v:%v@tcp(localhost:3306)/%v",
-		user,
-		pass,
-		database,
-	)
+	// Crear la cadena de conexión para PostgreSQL sin especificar la base de datos
+	return fmt.Sprintf("user=%s password=%s host=%s port=%s sslmode=disable",
+		user, pass, host, port)
 }
 
 // CreateConnection Create a new database connection
 func CreateConnection() (*sql.DB, error) {
 	// Configura la base de datos
 	db, err := sql.Open(
-		"mysql",
+		"postgres",
 		CreateConnectionString(),
 	)
-	if err != nil {
-		return nil, err
-	}
 
-	return db, nil
+	return db, err
 }

@@ -13,5 +13,36 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  mysql_test:
+    image: mysql:latest
+    container_name: repository-mysql-test
+    environment:
+      MYSQL_USER: ${DB_TEST_USERNAME}
+      MYSQL_PASSWORD: ${DB_TEST_PASSWORD}
+      MYSQL_ROOT_PASSWORD:  ${DB_TEST_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+
+  postgres:
+    image: postgres:13
+    container_name: repository-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5436:5432"
+
+  postgres_test:
+    image: postgres:13
+    container_name: repository-postgres-test
+    environment:
+      POSTGRES_USER: ${DB_TEST_USERNAME}
+      POSTGRES_PASSWORD: ${DB_TEST_PASSWORD}
+    ports:
+      - "5438:5432"
+
 volumes:
   mysql-data:
+  mysql-data-test:
