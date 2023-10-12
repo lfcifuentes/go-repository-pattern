@@ -1,18 +1,18 @@
-package users
+package repository
 
 import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/lfcifuentes/go-repository-pattern/users/domain"
+	"github.com/lfcifuentes/go-repository-pattern/app/model"
 )
 
 type UserRepository interface {
-	GetAll() ([]*domain.User, error)
-	GetID(id int) (*domain.User, error)
-	Create(user *domain.User) error
-	ChangePassword(user *domain.User) error
-	Update(user *domain.User) error
+	GetAll() ([]*model.User, error)
+	GetID(id int) (*model.User, error)
+	Create(user *model.User) error
+	ChangePassword(user *model.User) error
+	Update(user *model.User) error
 	Delete(id int) error
 }
 
@@ -25,7 +25,7 @@ func NewSQLUserRepository(db *sql.DB) *SQLUserRepository {
 }
 
 // GetAll get all users from database
-func (r *SQLUserRepository) GetAll() ([]*domain.User, error) {
+func (r *SQLUserRepository) GetAll() ([]*model.User, error) {
 	query := "SELECT id, name, email FROM users ORDER BY name "
 
 	rows, err := r.db.Query(query)
@@ -34,10 +34,10 @@ func (r *SQLUserRepository) GetAll() ([]*domain.User, error) {
 	}
 	defer rows.Close()
 
-	var users []*domain.User
+	var users []*model.User
 
 	for rows.Next() {
-		user := &domain.User{}
+		user := &model.User{}
 		err := rows.Scan(&user.ID, &user.Name, &user.Email)
 		if err != nil {
 			return nil, err
@@ -52,11 +52,11 @@ func (r *SQLUserRepository) GetAll() ([]*domain.User, error) {
 	return users, nil
 }
 
-func (r *SQLUserRepository) GetID(id int) (*domain.User, error) {
+func (r *SQLUserRepository) GetID(id int) (*model.User, error) {
 
 	query := "SELECT id, name, email FROM users WHERE id = ?"
 
-	var user domain.User
+	var user model.User
 	err := r.db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Email)
 
 	if err != nil {
@@ -69,30 +69,25 @@ func (r *SQLUserRepository) GetID(id int) (*domain.User, error) {
 	return &user, nil
 }
 
-func (r *SQLUserRepository) Create(user *domain.User) error {
+func (r *SQLUserRepository) Create(user *model.User) error {
 
-	query := "INSERT INTO repositorydb.users (id, name, email) values ( ?, ?, ?);"
+	query := "INSERT INTO public.users (name, password, email) VALUES ($1, $2, $3);"
 
-	row, err := r.db.Query(query, 1, user.Name, user.Email)
+	_, err := r.db.Exec(query, user.Name, user.CreatePasswordHash(), user.Email)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return fmt.Errorf("User not found")
-		}
-		return err
+		fmt.Println(err)
 	}
-
-	fmt.Println(row.Next())
 
 	return errors.New("ERROR")
 }
 
-func (r *SQLUserRepository) ChangePassword(user *domain.User) error {
+func (r *SQLUserRepository) ChangePassword(user *model.User) error {
 	// Implementa la lógica para crear un usuario en la base de datos.
 	return errors.New("ERROR")
 }
 
-func (r *SQLUserRepository) Update(user *domain.User) error {
+func (r *SQLUserRepository) Update(user *model.User) error {
 	// Implementa la lógica para actualizar un usuario en la base de datos.
 	return errors.New("ERROR")
 }

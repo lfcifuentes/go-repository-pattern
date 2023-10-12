@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/lfcifuentes/go-repository-pattern/cmd"
+	cmd2 "github.com/lfcifuentes/go-repository-pattern/app/cmd"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -11,8 +11,8 @@ func main() {
 	var rootCmd = &cobra.Command{Use: "repository_pattern_example"}
 
 	rootCmd.AddCommand(
-		cmd.Run,
-		cmd.Migrate,
+		cmd2.Run,
+		cmd2.Migrate,
 	)
 
 	if err := rootCmd.Execute(); err != nil {

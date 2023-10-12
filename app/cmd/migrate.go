@@ -61,7 +61,7 @@ func migratePsql() {
 	defer db.Close()
 
 	// Ejecuta la sentencia SQL para crear la base de datos si no existe
-	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE %s;", dbName))
+	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE %s WITH ENCODING 'UTF8';", dbName))
 	if err != nil {
 		log.Fatal("Error creating database:", err)
 	}
@@ -80,7 +80,7 @@ func migratePsql() {
 		id serial PRIMARY KEY,
 		name VARCHAR(255),
 		password VARCHAR(255),
-		email VARCHAR(255)
+		email VARCHAR(255) UNIQUE NOT NULL
 	);`)
 	if err != nil {
 		log.Fatal("Error creating tables:", err)

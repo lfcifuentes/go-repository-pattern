@@ -34,5 +34,5 @@ func ResponseUnprocessableEntity(w http.ResponseWriter, r *http.Request) {
 
 type Response struct {
 	Data    interface{} `json:"data,omitempty"`
-	Message string      `json:"message"`
+	Message string      `json:"message,omitempty"`
 }
